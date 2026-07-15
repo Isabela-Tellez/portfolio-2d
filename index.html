@@ -123,18 +123,28 @@
         let player, cursors, mapa, sueloLayer;
 
         function preload() {
-            this.load.spritesheet('isabela', 'assets/characters/isabela.png', { frameWidth: 120, frameHeight: 160 });
-            this.load.image('tiles', 'assets/tilesets/bitsmall-tiles.png');
+            // Carga del spritesheet e indicación para cambiar de fondo blanco a transparente
+            this.load.spritesheet('isabela', 'assets/characters/isabela.png', { 
+                frameWidth: 298, 
+                frameHeight: 298,
+            });
+
+            //Carga de ambos tilesets
+            this.load.image('tiles-suelo', 'assets/tilesets/bitsmall-tiles.png');
+            this.load.image('tiles-suelo', 'assets/tilesets/decoraciones.png');
+
+            //Carga de mapa JSON de tiled
             this.load.tilemapTiledJSON('mapa-json', 'assets/maps/mapa.json');
         }
 
         function create() {
+            //Inicialización de
             mapa = this.make.tilemap({ key: 'mapa-json' });
-            const tileset = mapa.addTilesetImage('bitsmall', 'tiles');
+            const tileset = mapa.addTilesetImage('bitsmall', 'tiles', 16, 16, 0, 0);
             sueloLayer = mapa.createLayer('Suelo', tileset, 0, 0);
             sueloLayer.setScale(4); 
 
-            player = this.physics.add.sprite(100, 100, 'isabela').setScale(0.35);
+            player = this.physics.add.sprite(100, 100, 'isabela').setScale(0.2);
             player.setCollideWorldBounds(true);
 
             // Animaciones (12 frames)
@@ -151,30 +161,43 @@
                 key: 'walk-up', frames: this.anims.generateFrameNumbers('isabela', { start: 9, end: 11 }), frameRate: 8, repeat: -1
             });
 
-            cursors = this.input.keyboard.addKeys({
-                up: Phaser.Input.Keyboard.KeyCodes.W, down: Phaser.Input.Keyboard.KeyCodes.S,
-                left: Phaser.Input.Keyboard.KeyCodes.A, right: Phaser.Input.Keyboard.KeyCodes.D,
-                arrows: this.input.keyboard.createCursorKeys()
-            });
+            cursors = this.input.keyboard.createCursorKeys();
 
             this.cameras.main.setBounds(0, 0, 800, 600);
             this.cameras.main.startFollow(player, true, 0.05, 0.05);
         }
 
-        function update() {
-            const speed = 150;
-            player.setVelocity(0);
+        function update()
+        {
+            const speed = 200;
 
-            if (cursors.left.isDown || cursors.arrows.left.isDown) {
-                player.setVelocityX(-speed); player.anims.play('walk-left', true);
-            } else if (cursors.right.isDown || cursors.arrows.right.isDown) {
-                player.setVelocityX(speed); player.anims.play('walk-right', true);
-            } else if (cursors.up.isDown || cursors.arrows.up.isDown) {
-                player.setVelocityY(-speed); player.anims.play('walk-up', true);
-            } else if (cursors.down.isDown || cursors.arrows.down.isDown) {
-                player.setVelocityY(speed); player.anims.play('walk-down', true);
+            // Reinicio de la velocidad en cada frame para que no se mueva eternamente
+            if (player && player.body) {
+                player.setVelocity(0);
+            }
+
+            // Filtro de seguridad: si las teclas no están listas, no se hace nada
+            if (!cursors || !cursors.left || !cursors.right || !cursors.up || !cursors.down) {
+                return;
+            }
+
+            // Lógica de movimiento e intercambio de animaciones
+            if (cursors.left.isDown) {
+                player.setVelocityX(-speed);
+                player.anims.play('walk-left', true);
+            } else if (cursors.right.isDown) {
+                player.setVelocityX(speed);
+                player.anims.play('walk-right', true);
+            } else if (cursors.up.isDown) {
+                player.setVelocityY(-speed);
+                player.anims.play('walk-up', true);
+            } else if (cursors.down.isDown) {
+                player.setVelocityY(speed);
+                player.anims.play('walk-down', true);
             } else {
-                player.anims.stop(); player.setFrame(1); // Frame mirando al frente
+                // Si no se presiona nada, se detiene la animación y mira al frente
+                player.anims.stop();
+                player.setFrame(1); 
             }
         }
     </script>
