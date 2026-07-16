@@ -3,203 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Isabela | Software Engineer & Multimedia Portfolio</title>
+    <title>Isabela Dev Portfolio</title>
+
+    <!-- Carga de Phaser desde su CDN oficial -->
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.min.js"></script>
     <style>
-        * { box-sizing: border-box; }
         body {
-            margin: 0; padding: 0;
-            background-color: #1a1b26; color: #a9b1d6;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            min-height: 100vh; overflow-x: hidden;
+            margin: 0;
+            background-color: #1a1a1a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
         }
-        #nav-container {
-            width: 800px; display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 12px; padding: 0 10px;
-        }
-        .btn {
-            background-color: #f472b6; color: white; border: none;
-            padding: 10px 20px; font-weight: bold; border-radius: 6px;
-            cursor: pointer; transition: background 0.2s, transform 0.1s;
-            text-decoration: none; display: inline-block;
-        }
-        .btn:hover { background-color: #db2777; }
-        .btn:active { transform: scale(0.98); }
         #game-container {
-            border: 4px solid #f472b6; border-radius: 8px;
-            overflow: hidden; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            background-color: #000;
-        }
-        #recruiter-mode {
-            display: none; width: 800px; background: #24283b;
-            padding: 40px; border-radius: 8px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); border: 2px solid #414868;
-        }
-        h1 { color: #f472b6; margin-top: 0; font-size: 2.5rem; }
-        h2 { color: #f472b6; border-bottom: 2px solid #414868; padding-bottom: 8px; margin-top: 30px; }
-        h3 { color: #7aa2f7; margin-bottom: 5px; }
-        hr { border: 0; border-top: 1px solid #414868; margin: 25px 0; }
-        ul { padding-left: 20px; line-height: 1.6; }
-        li { margin-bottom: 8px; }
-        a { color: #f472b6; text-decoration: none; }
-        a:hover { text-decoration: underline; }
-        .project-card {
-            background: #1f2335; padding: 15px; border-radius: 6px;
-            margin-bottom: 15px; border-left: 4px solid #f472b6;
+            border: 4px solid #ff007f;
+            box-shadow: 0 0 20px #ff007f;
         }
     </style>
-    <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser-arcade-physics.min.js"></script>
 </head>
 <body>
 
-    <div id="nav-container">
-        <h2 style="margin: 0; font-size: 1.4rem; border: none; padding: 0; color: #f472b6;">Isabela_Dev_Portfolio_2D</h2>
-        <button class="btn" id="toggle-mode-btn" onclick="toggleMode()">Cambiar a Modo Reclutador 💼</button>
-    </div>
-
-    <!-- VISTA JUEGO -->
+    <!-- Aquí es donde Phaser dibujará el lienzo del juego -->
     <div id="game-container"></div>
 
-    <!-- VISTA RECLUTADOR -->
-    <div id="recruiter-mode">
-        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 20px;">
-            <div>
-                <h1>Isabela</h1>
-                <p style="font-size: 1.1rem; margin: 5px 0 15px 0;"><strong>Meta:</strong> Fusionar ingeniería de software, multimedia, VR e IA.</p>
-                <p>🌍 Castellano (Nativo) | Inglés (B2)</p>
-            </div>
-            <a href="#" class="btn">📥 Descargar CV (PDF)</a>
-        </div>
-        
-        <hr>
+    <!-- Carga del archivo principal como un MÓDULO de ES6 -->
+    <script type="module" src="js/main.js"></script>
 
-        <h2>🌱 Formación</h2>
-        <ul>
-            <li><strong>Grado en Ingeniería Informática</strong> - Universidad Internacional de La Rioja (UNIR)</li>
-            <li><strong>Bootcamp en Inteligencia Artificial y Python</strong> (1250h) - Somos F5</li>
-            <li><strong>Máster en Programación de Videojuegos con Unity, VR y AR</strong> (2024)</li>
-            <li><strong>FP Grado Superior en Animación 3D, Juegos y Entornos Interactivos</strong> (2022 - 2024)</li>
-        </ul>
-
-        <h2>🛠️ Tecnologías</h2>
-        <p><strong>Lenguajes:</strong> Python, C#, C++, SQL, HTML, CSS, JavaScript</p>
-        <p><strong>Herramientas & IA:</strong> Unity, Unreal Engine, AWS, Docker, Pandas, NumPy, Git</p>
-
-        <h2>🦊 Proyectos</h2>
-        <div class="project-card">
-            <h3>Looking-For-You</h3>
-            <p>Juego de plataformas 2D con 3 mundos y 5 niveles cada uno.</p>
-        </div>
-        <div class="project-card">
-            <h3>Climapp / UrbanNexus</h3>
-            <p>Optimización y monitorización climática urbana para Smart Cities.</p>
-        </div>
-    </div>
-
-    <script>
-        let gameActive = true;
-        function toggleMode() {
-            const gameDiv = document.getElementById('game-container');
-            const recruiterDiv = document.getElementById('recruiter-mode');
-            const btn = document.getElementById('toggle-mode-btn');
-
-            if (gameActive) {
-                gameDiv.style.display = 'none'; recruiterDiv.style.display = 'block';
-                btn.innerText = "Cambiar a Modo Juego 🎮"; gameActive = false;
-            } else {
-                gameDiv.style.display = 'block'; recruiterDiv.style.display = 'none';
-                btn.innerText = "Cambiar a Modo Reclutador 💼"; gameActive = true;
-            }
-        }
-
-        // --- PHASER GAME ---
-        const config = {
-            type: Phaser.AUTO, width: 800, height: 600, parent: 'game-container',
-            physics: { default: 'arcade', arcade: { gravity: { y: 0 }, debug: false } },
-            scene: { preload: preload, create: create, update: update }
-        };
-
-        const game = new Phaser.Game(config);
-        let player, cursors, mapa, sueloLayer;
-
-        function preload() {
-            // Carga del spritesheet e indicación para cambiar de fondo blanco a transparente
-            this.load.spritesheet('isabela', 'assets/characters/isabela.png', { 
-                frameWidth: 298, 
-                frameHeight: 298,
-            });
-
-            //Carga de ambos tilesets
-            this.load.image('tiles-suelo', 'assets/tilesets/bitsmall-tiles.png');
-            this.load.image('tiles-suelo', 'assets/tilesets/decoraciones.png');
-
-            //Carga de mapa JSON de tiled
-            this.load.tilemapTiledJSON('mapa-json', 'assets/maps/mapa.json');
-        }
-
-        function create() {
-            //Inicialización de
-            mapa = this.make.tilemap({ key: 'mapa-json' });
-            const tileset = mapa.addTilesetImage('bitsmall', 'tiles', 16, 16, 0, 0);
-            sueloLayer = mapa.createLayer('Suelo', tileset, 0, 0);
-            sueloLayer.setScale(4); 
-
-            player = this.physics.add.sprite(100, 100, 'isabela').setScale(0.2);
-            player.setCollideWorldBounds(true);
-
-            // Animaciones (12 frames)
-            this.anims.create({
-                key: 'walk-down', frames: this.anims.generateFrameNumbers('isabela', { start: 0, end: 2 }), frameRate: 8, repeat: -1
-            });
-            this.anims.create({
-                key: 'walk-left', frames: this.anims.generateFrameNumbers('isabela', { start: 3, end: 5 }), frameRate: 8, repeat: -1
-            });
-            this.anims.create({
-                key: 'walk-right', frames: this.anims.generateFrameNumbers('isabela', { start: 6, end: 8 }), frameRate: 8, repeat: -1
-            });
-            this.anims.create({
-                key: 'walk-up', frames: this.anims.generateFrameNumbers('isabela', { start: 9, end: 11 }), frameRate: 8, repeat: -1
-            });
-
-            cursors = this.input.keyboard.createCursorKeys();
-
-            this.cameras.main.setBounds(0, 0, 800, 600);
-            this.cameras.main.startFollow(player, true, 0.05, 0.05);
-        }
-
-        function update()
-        {
-            const speed = 200;
-
-            // Reinicio de la velocidad en cada frame para que no se mueva eternamente
-            if (player && player.body) {
-                player.setVelocity(0);
-            }
-
-            // Filtro de seguridad: si las teclas no están listas, no se hace nada
-            if (!cursors || !cursors.left || !cursors.right || !cursors.up || !cursors.down) {
-                return;
-            }
-
-            // Lógica de movimiento e intercambio de animaciones
-            if (cursors.left.isDown) {
-                player.setVelocityX(-speed);
-                player.anims.play('walk-left', true);
-            } else if (cursors.right.isDown) {
-                player.setVelocityX(speed);
-                player.anims.play('walk-right', true);
-            } else if (cursors.up.isDown) {
-                player.setVelocityY(-speed);
-                player.anims.play('walk-up', true);
-            } else if (cursors.down.isDown) {
-                player.setVelocityY(speed);
-                player.anims.play('walk-down', true);
-            } else {
-                // Si no se presiona nada, se detiene la animación y mira al frente
-                player.anims.stop();
-                player.setFrame(1); 
-            }
-        }
-    </script>
 </body>
 </html>
